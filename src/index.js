@@ -1,3 +1,3 @@
 import CookieConsent from './CookieConsent.js';
 
-new CookieConsent();
+window.CookieConsent = CookieConsent;

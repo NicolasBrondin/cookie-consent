@@ -2,16 +2,20 @@ import template from './template.html'
 import css from './template.css'
 import cookie_svg from './assets/cookie-bite-solid.svg'
 
-var CookieConsent = function (){
+var CookieConsent = function (analytics_callback){
+    
     this.expanded = true;
     this.consent = null;
+    this.analytics_callback = analytics_callback;
 
     this.show_more = function(){
         cookie_popup.style.display = "block";   
     }
+
     this.close = function(){
         document.getElementById('cookie-expand').style.display = "block";
         document.getElementById('cookie-band-large').style.display = "none";
+        document.querySelector("#cookie-popup").style.display = "none";
     }
 
     this.expand = function(){
@@ -34,16 +38,35 @@ var CookieConsent = function (){
     cookie_popup.style.display = "none";
     cookie_bar_button.onclick = this.show_more;
     cookie_bar_button_close.onclick = this.close;
-    window.localStorage.setItem("cookie_bar_appeared", true);
 
-    document.getElementById('cookie-expand').style.display = "none";
+    if(window.localStorage.getItem("cookie_bar_appeared") === 'true'){
+        this.close();
+    } else {
+        this.expand();
+    }
+    
+    this.consent = window.localStorage.getItem("cookie_bar_consent") != 'false';
+    document.getElementById('consent-input').checked = this.consent;
+    if(this.consent && this.analytics_callback){
+        this.analytics_callback();
+    }
+
     document.getElementById('cookie-expand').onclick = this.expand;
-
+    
+    window.localStorage.setItem("cookie_bar_appeared", true);
     document.getElementById('consent-input').addEventListener('change',function(e){
         this.consent = e.target.checked;
+        window.localStorage.setItem("cookie_bar_consent", this.consent);
         setTimeout(function(){
             cookie_popup.style.display = "none";
-        }.bind(this),500);
+            if(this.consent === false){
+                location.reload(); 
+            } else {
+                if(this.analytics_callback) {
+                    this.analytics_callback();
+                }
+            }
+        }.bind(this), 500);
    }.bind(this),false);
     
 }
