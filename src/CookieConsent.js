@@ -8,23 +8,27 @@ var CookieConsent = function (analytics_callback){
     this.consent = null;
     this.analytics_callback = analytics_callback;
 
+    //elements
+    this.cookie_popup = null;
+    this.cookie_bar_button = null;
+    this.cookie_bar_button_close = null;
+
     this.show_more = function(){
-        cookie_popup.style.display = "block";   
-    }
+        this.cookie_popup.style.display = "block";   
+    }.bind(this);
 
     this.close = function(){
         document.getElementById('cookie-expand').style.display = "block";
         document.getElementById('cookie-band-large').style.display = "none";
         document.querySelector("#cookie-popup").style.display = "none";
-    }
+    }.bind(this);
 
     this.expand = function(){
         document.getElementById('cookie-band-large').style.display = "block";
         document.getElementById('cookie-expand').style.display = "none";
-    }
+    }.bind(this);
 
     this.init = function(){
-        console.log("init");
         var style = document.createElement('style');
         style.innerText= css;
         document.head.prepend(style);
@@ -34,12 +38,12 @@ var CookieConsent = function (analytics_callback){
         
         document.body.appendChild(cookie_bar_element);
     
-        var cookie_bar_button = document.querySelector("#cookie-show-more");
-        var cookie_bar_button_close = document.querySelector("#cookie-close");
-        var cookie_popup = document.querySelector("#cookie-popup");
-        cookie_popup.style.display = "none";
-        cookie_bar_button.onclick = this.show_more;
-        cookie_bar_button_close.onclick = this.close;
+        this.cookie_bar_button = document.querySelector("#cookie-show-more");
+        this.cookie_bar_button_close = document.querySelector("#cookie-close");
+        this.cookie_popup = document.querySelector("#cookie-popup");
+        this.cookie_popup.style.display = "none";
+        this.cookie_bar_button.onclick = this.show_more;
+        this.cookie_bar_button_close.onclick = this.close;
     
         if(window.localStorage.getItem("cookie_bar_appeared") === 'true'){
             this.close();
@@ -60,7 +64,7 @@ var CookieConsent = function (analytics_callback){
             this.consent = e.target.checked;
             window.localStorage.setItem("cookie_bar_consent", this.consent);
             setTimeout(function(){
-                cookie_popup.style.display = "none";
+                this.cookie_popup.style.display = "none";
                 if(this.consent === false){
                     location.reload(); 
                 } else {
