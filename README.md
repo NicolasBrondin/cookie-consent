@@ -11,7 +11,7 @@ Demo is available here: [Github page](https://nicolasbrondin.github.io/cookie-co
 You can host the script yourself, or rely on the github hosted version. Then the only things you need is to initialize the CookieConsent instance with your tracking code : 
 ```
 <script src="https://www.googletagmanager.com/gtag/js?id=UA-XXXXXXXX-X"></script>
-<script src="https://nicolasbrondin.github.io/cookie-consent/dist/main.js"></script>
+<script src="https://github.com/NicolasBrondin/cookie-consent/releases/download/v0.0.1/main.js"></script>
 <script>
     new CookieConsent(function(){
         window.dataLayer = window.dataLayer || [];
