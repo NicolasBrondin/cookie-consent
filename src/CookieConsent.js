@@ -2,11 +2,12 @@ import template from './template.html'
 import css from './template.css'
 import cookie_svg from './assets/cookie-bite-solid.svg'
 
-var CookieConsent = function (analytics_callback){
+var CookieConsent = function (analytics_callback, opt_out_callback){
     
     this.expanded = true;
     this.consent = null;
     this.analytics_callback = analytics_callback;
+    this.opt_out_callback = opt_out_callback;
 
     //elements
     this.cookie_popup = null;
@@ -55,6 +56,8 @@ var CookieConsent = function (analytics_callback){
         document.getElementById('consent-input').checked = this.consent;
         if(this.consent && this.analytics_callback){
             this.analytics_callback();
+        } else if(!this.consent && this.opt_out_callback){
+            this.opt_out_callback();
         }
     
         document.getElementById('cookie-expand').onclick = this.expand;
