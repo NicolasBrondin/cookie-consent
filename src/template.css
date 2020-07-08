@@ -47,6 +47,7 @@
   vertical-align: middle;
   opacity: 0.3;
   height: 15px;
+  display: inline-block;
 }
 
 #cookie-show-more {
